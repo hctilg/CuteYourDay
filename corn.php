@@ -8,7 +8,7 @@
 
 $ch = curl_init();
 // Replace your site address.
-curl_setopt($ch, CURLOPT_URL, "https://example.com/cuteCuteYourDay/sender.php");
+curl_setopt($ch, CURLOPT_URL, "https://example.com/CuteYourDay/sender.php");
 curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 curl_exec($ch);
 curl_close($ch);
