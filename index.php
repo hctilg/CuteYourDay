@@ -2,7 +2,7 @@
 
 /********************** Importing Requirements **********************/
 
-$telebot_path = __DIR__ . '/telebot@2.1.php';
+$telebot_path = 'telebot@2.1.php';
 
 // checking the exists "Telebot Library".
 if (!file_exists($telebot_path)) {
