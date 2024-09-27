@@ -30,14 +30,6 @@ try {
   exit;
 }
 
-if ((date('G') % 12) == 0) {
-  $bot->sendDocument([
-    'chat_id'=> CREATOR,
-    'document'=> 'database.db',
-    'reply_markup'=> Telebot::inline_keyboard("[Show Info|get_info]")
-  ]);
-}
-
 $users = $db->get_users();
 
 foreach($users as $user) {
