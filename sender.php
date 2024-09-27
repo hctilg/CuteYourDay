@@ -40,6 +40,11 @@ foreach($pic_types as $pic_type) {
 }
 
 foreach($users as $user) {
+  $chat_member = $bot->getChatMember(['chat_id'=> $user['id'], 'user_id'=> $user['id']]);
+  $status = $chat_member['ok'] ? $chat_member['result']['status'] : 'left';
+  $is_member = in_array($status, ['member', 'administrator', 'creator']);
+  if (!$is_member) continue;
+  
   if ((time() - $user['last_date']) > (int)(6.1 * 60 * 60)) {
     $types = json_decode($user['data']);
     $rand_type = $types[array_rand($types)];
