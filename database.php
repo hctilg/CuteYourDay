@@ -36,6 +36,15 @@ class Database {
     return true;
   }
 
+  public function remove_user($chat_id) {
+    if (!$this->user_exists($chat_id)) return false;
+    
+    $stmt = $this->connection->prepare("DELETE FROM `users` WHERE `id` = :id");
+    $stmt->bindParam(':id', $chat_id, PDO::PARAM_INT);
+    $stmt->execute();
+    return true;
+  }
+
   public function get_user($chat_id) {
     if (!$this->user_exists($chat_id)) return false;
 
