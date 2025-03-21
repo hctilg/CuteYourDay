@@ -43,6 +43,7 @@ foreach($users as $user) {
   $chat_member = $bot->getChatMember(['chat_id'=> $user['id'], 'user_id'=> $user['id']]);
   $status = $chat_member['ok'] ? $chat_member['result']['status'] : 'left';
   $is_member = in_array($status, ['member', 'administrator', 'creator']);
+  if (!$chat_member['ok']) $db->remove_user($user['id']);
   if (!$is_member) continue;
   
   if ((time() - $user['last_date']) > (int)(6.1 * 60 * 60)) {
