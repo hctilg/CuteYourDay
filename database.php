@@ -5,7 +5,7 @@
 class Database {
   public $connection = null;
   public function __construct() {
-    // sudo apt-get install php-sqlite3
+    // sudo apt-get install php-sqlite3 or sudo pacman -S php-sqlite
     $this->connection = new PDO("sqlite:database.db");
     $this->connection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
   }
@@ -25,7 +25,7 @@ class Database {
   public function add_user($chat_id) {
     if ($this->user_exists($chat_id)) return false;
 
-    $data = json_encode(explode('|', "cat|dog|bird|boy|girl|anime|etc"));
+    $data = json_encode(CONTENT_TYPES);
     $date = time() - (24 * 60 * 60);
     
     $stmt = $this->connection->prepare("INSERT INTO `users` (`id`, `data`, `turn`, `last_date`) VALUES (:id, :data, 'true', :date)");
@@ -91,12 +91,11 @@ class Database {
       ],
       'media'=> [
         'all'=> $all_media,
-        'cat'=> $this->pic_count('cat'),
-        'dog'=> $this->pic_count('dog'),
-        'bird'=> $this->pic_count('bird'),
-        'boy'=> $this->pic_count('boy'),
-        'girl'=> $this->pic_count('girl'),
+        'animals'=> $this->pic_count('animals'),
+        'sweetie'=> $this->pic_count('sweetie'),
         'anime'=> $this->pic_count('anime'),
+        'foods'=> $this->pic_count('foods'),
+        'kids'=> $this->pic_count('kids'),
         'etc'=> $this->pic_count('etc')
       ]
     ];

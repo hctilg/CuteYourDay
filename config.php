@@ -1,5 +1,7 @@
 <?php
 
+define("CONTENT_TYPES", ['animals', 'sweetie', 'anime', 'foods', 'kids', 'etc']);
+
 /********************* Configs for Telegram Bot *********************/
 
 // Get it from @BotFather

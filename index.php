@@ -44,6 +44,9 @@ $bot->on('text', function($data) use ($bot, $db) {
   if ($chat_id == CREATOR) {
     if (startsWith('/backup', $text)) {
       date_default_timezone_set('Asia/Tehran');
+      $bot->setMessageReaction(['chat_id'=> $chat_id, 'reaction'=> json_encode([
+        ['type' => 'emoji', 'emoji'=> '👀']
+      ]), 'message_id'=> $msg_id]);
       $bot->sendDocument([
         'chat_id'=> $chat_id,
         'document'=> 'database.db',
@@ -55,6 +58,9 @@ $bot->on('text', function($data) use ($bot, $db) {
   }
   
   if ($user['turn']) {
+    $bot->setMessageReaction(['chat_id'=> $chat_id, 'reaction'=> json_encode([
+      ['type' => 'emoji', 'emoji'=> '💘']
+    ]), 'message_id'=> $msg_id]);
     $bot->sendMessage([
       'chat_id'=> $chat_id,
       'text'=> "Hey, welcome to the _Cute Your Day_ bot!\n\nThanks for starting the bot. From now on, I'll be sending you some cute pictures every day to make your day cute.",
@@ -63,6 +69,9 @@ $bot->on('text', function($data) use ($bot, $db) {
       'parse_mode'=> "Markdown"
     ]);
   } else {
+    $bot->setMessageReaction(['chat_id'=> $chat_id, 'reaction'=> json_encode([
+      ['type' => 'emoji', 'emoji'=> '😍']
+    ]), 'message_id'=> $msg_id]);
     $bot->sendMessage([
       'chat_id'=> $chat_id,
       'text'=> "Umm.. please first, turn me on, cute!",
@@ -73,7 +82,7 @@ $bot->on('text', function($data) use ($bot, $db) {
   }
   
   if ($is_new) {
-    $types = ['cat', 'bird', 'etc'];
+    $types = ['animals', 'sweetie', 'etc'];
     $rand_type = $types[array_rand($types)];
     $pic = $db->random($rand_type);
     if (!empty($pic)) $bot->copyMessage(['chat_id'=> $chat_id, 'from_chat_id'=> CHACNNEL_MEDIA, 'message_id'=> $pic, 'caption'=> "first photo for you :)", 'protect_content'=> 'false']);
@@ -89,7 +98,9 @@ $bot->on('photo', function($data) use ($bot) {
   
   if ($chat_type != 'private' || $chat_id != CREATOR) return;
   
-  $bot->sendMessage(['chat_id'=> CREATOR, 'text'=> "✅", 'reply_to_message_id'=> $msg_id]);
+  $bot->setMessageReaction(['chat_id'=> CREATOR, 'reaction'=> json_encode([
+    ['type' => 'emoji', 'emoji'=> '👍']
+  ]), 'message_id'=> $msg_id]);
   
   $mc = $bot->sendPhoto(['chat_id'=> CHACNNEL_MEDIA, 'photo'=> $photo]);
   $mc_id = $mc['result']['message_id'];
@@ -98,10 +109,10 @@ $bot->on('photo', function($data) use ($bot) {
     'chat_id'=> CHACNNEL_MEDIA,
     'text'=> "Choose Type or Reject:",
     'reply_markup'=> Telebot::inline_keyboard("
-[Dog 🐶|set_dog_$mc_id] [Cat 🐈|set_cat_$mc_id]
-[Boy 🧑🏻‍🦱|set_boy_$mc_id] [Girl 👱🏻‍♀|set_girl_$mc_id]
-[Anime 🎗|set_anime_$mc_id] [Bird 🐣|set_bird_$mc_id]
-[Reject ✖️|reject_$mc_id] [Others...|set_etc_$mc_id]
+[Sweetie 🎀|set_sweetie_$mc_id] [Foods 🍩|set_foods_$mc_id]
+[Animals 🐈|set_animals_$mc_id] [Kids 👼🏻|set_kids_$mc_id]
+[Anime 🎗|set_anime_$mc_id] [Other...|set_etc_$mc_id]
+[Reject ✖️|reject_$mc_id]
 "),
     'reply_to_message_id'=> $mc_id
   ]);
@@ -115,7 +126,9 @@ $bot->on('video', function($data) use ($bot) {
   
   if ($chat_type != 'private' || $chat_id != CREATOR) return;
   
-  $bot->sendMessage(['chat_id'=> CREATOR, 'text'=> "✅", 'reply_to_message_id'=> $msg_id]);
+  $bot->setMessageReaction(['chat_id'=> CREATOR, 'reaction'=> json_encode([
+    ['type' => 'emoji', 'emoji'=> '👍']
+  ]), 'message_id'=> $msg_id]);
   
   $mc = $bot->sendVideo(['chat_id'=> CHACNNEL_MEDIA, 'video'=> $video]);
   $mc_id = $mc['result']['message_id'];
@@ -124,10 +137,10 @@ $bot->on('video', function($data) use ($bot) {
     'chat_id'=> CHACNNEL_MEDIA,
     'text'=> "Choose Type or Reject:",
     'reply_markup'=> Telebot::inline_keyboard("
-[Dog 🐶|set_dog_$mc_id] [Cat 🐈|set_cat_$mc_id]
-[Boy 🧑🏻‍🦱|set_boy_$mc_id] [Girl 👱🏻‍♀|set_girl_$mc_id]
-[Anime 🎗|set_anime_$mc_id] [Bird 🐣|set_bird_$mc_id]
-[Reject ✖️|reject_$mc_id] [Others...|set_etc_$mc_id]
+[Sweetie 🎀|set_sweetie_$mc_id] [Foods 🍩|set_foods_$mc_id]
+[Animals 🐈|set_animals_$mc_id] [Kids 👼🏻|set_kids_$mc_id]
+[Anime 🎗|set_anime_$mc_id] [Other...|set_etc_$mc_id]
+[Reject ✖️|reject_$mc_id]
 "),
     'reply_to_message_id'=> $mc_id
   ]);
@@ -141,7 +154,9 @@ $bot->on('animation', function($data) use ($bot) {
   
   if ($chat_type != 'private' || $chat_id != CREATOR) return;
   
-  $bot->sendMessage(['chat_id'=> CREATOR, 'text'=> "✅", 'reply_to_message_id'=> $msg_id]);
+  $bot->setMessageReaction(['chat_id'=> CREATOR, 'reaction'=> json_encode([
+    ['type' => 'emoji', 'emoji'=> '👍']
+  ]), 'message_id'=> $msg_id]);
   
   $mc = $bot->sendAnimation(['chat_id'=> CHACNNEL_MEDIA, 'animation'=> $gif]);
   $mc_id = $mc['result']['message_id'];
@@ -150,10 +165,10 @@ $bot->on('animation', function($data) use ($bot) {
     'chat_id'=> CHACNNEL_MEDIA,
     'text'=> "Choose Type or Reject:",
     'reply_markup'=> Telebot::inline_keyboard("
-[Dog 🐶|set_dog_$mc_id] [Cat 🐈|set_cat_$mc_id]
-[Boy 🧑🏻‍🦱|set_boy_$mc_id] [Girl 👱🏻‍♀|set_girl_$mc_id]
-[Anime 🎗|set_anime_$mc_id] [Bird 🐣|set_bird_$mc_id]
-[Reject ✖️|reject_$mc_id] [Others...|set_etc_$mc_id]
+[Sweetie 🎀|set_sweetie_$mc_id] [Foods 🍩|set_foods_$mc_id]
+[Animals 🐈|set_animals_$mc_id] [Kids 👼🏻|set_kids_$mc_id]
+[Anime 🎗|set_anime_$mc_id] [Other...|set_etc_$mc_id]
+[Reject ✖️|reject_$mc_id]
 "),
     'reply_to_message_id'=> $mc_id
   ]);
@@ -165,7 +180,7 @@ $bot->on('callback_query', function($callback_query) use ($bot, $db) {
   $chat_id = $callback_query['message']['chat']['id'];
   $msg_id = $callback_query['message']['message_id'];
   $keyboard = $callback_query['message']['reply_markup'];
-  $li = ['cat'=> 0, 'dog'=> 1, 'bird'=> 2, 'boy'=> 3, 'girl'=> 4, 'anime'=> 5, 'etc'=> 6];
+  $li = array_flip(CONTENT_TYPES);
   
   if (startsWith('reject_', $query_data)) {
     $bot->deleteMessage(['chat_id'=> $chat_id, 'message_id'=> $msg_id]);
@@ -174,14 +189,42 @@ $bot->on('callback_query', function($callback_query) use ($bot, $db) {
     return;
   }
   
-  if (startsWith('set_', $query_data)) {
-    $k = explode('_', substr($query_data, strlen('set_')));
-    $type = $k[0];
-    $pic_id = $k[1];
-    $db->add_media($type, $pic_id);
-    $bot->deleteMessage(['chat_id'=> CHACNNEL_MEDIA, 'message_id'=> $msg_id]);
-    $bot->editMessageCaption(['chat_id'=> CHACNNEL_MEDIA, 'message_id'=> $pic_id,'caption'=> "#$type", 'reply_markup'=> Telebot::inline_keyboard("[Delete ✖️|remove_$pic_id]")]);
+  if (startsWith('set_', $query_data) || startsWith('reset_', $query_data)) {
+    $k = explode('_', $query_data);
+    $type = $k[1];
+    $media_id = $k[2];
+    $db->add_media($type, $media_id);
+
+    if ($k[0] == 'set')
+      $bot->deleteMessage(['chat_id'=> CHACNNEL_MEDIA, 'message_id'=> $msg_id]);
+
+    $bot->editMessageCaption([
+      'chat_id'=> CHACNNEL_MEDIA,
+      'message_id'=> $media_id,
+      'caption'=> "#$type",
+      'reply_markup'=> Telebot::inline_keyboard("[Change 🎨|change_$media_id][Delete ✖️|remove_$media_id]")
+    ]);
     $bot->answerCallbackQuery(['callback_query_id'=> $query_id, 'text'=> "Resolved 🧸", 'show_alert'=> false]);
+    return;
+  }
+  
+  if (startsWith('change_', $query_data)) {
+    $media_id = substr($query_data, strlen('change_'));
+    $db->remove_media($media_id);
+    $bot->editMessageCaption([
+      'chat_id'=> CHACNNEL_MEDIA,
+      'message_id'=> $media_id,
+      'text'=> "Choose Type or Delete:",
+      'reply_markup'=> Telebot::inline_keyboard("
+[Animals 🐈|reset_animals_$media_id]
+[Sweetie 🎀|reset_sweetie_$media_id]
+[Anime 🎗|reset_anime_$media_id]
+[Foods 🍩|reset_foods_$media_id]
+[Kids 👼🏻|reset_kids_$media_id]
+[Other...|reset_etc_$media_id]
+[Delete ✖️|remove_$media_id]
+")
+    ]);
     return;
   }
   
@@ -209,13 +252,12 @@ All Users: $users[all]
 + Archive: $users[archive]
 
 All media: $media[all]
-+ Cat: $media[cat]
-+ Dog: $media[dog]
-+ Bird: $media[bird]
-+ Boy: $media[boy]
-+ Girl: $media[girl]
++ Animals: $media[animals]
++ Sweetie: $media[sweetie]
 + Anime: $media[anime]
-+ Etc: $media[etc]
++ Foods: $media[foods]
++ Kids: $media[kids]
++ Other: $media[etc]
 ",
         'reply_markup'=> Telebot::inline_keyboard("[Update  🔄|get_info]"),
         'message_id'=> $msg_id,
@@ -233,25 +275,23 @@ All media: $media[all]
         'message_id'=> $msg_id
       ]);
     } elseif ($query_data == 'customize') {
-      $ch_cat = in_array('cat', $user['data']) ? '✅' : '❌';
-      $ch_dog = in_array('dog', $user['data']) ? '✅' : '❌';
-      $ch_bird = in_array('bird', $user['data']) ? '✅' : '❌';
-      $ch_boy = in_array('boy', $user['data']) ? '✅' : '❌';
-      $ch_girl = in_array('girl', $user['data']) ? '✅' : '❌';
+      $ch_animals = in_array('animals', $user['data']) ? '✅' : '❌';
+      $ch_sweetie = in_array('sweetie', $user['data']) ? '✅' : '❌';
       $ch_anime = in_array('anime', $user['data']) ? '✅' : '❌';
+      $ch_foods = in_array('foods', $user['data']) ? '✅' : '❌';
+      $ch_kids = in_array('kids', $user['data']) ? '✅' : '❌';
       $ch_etc = in_array('etc', $user['data']) ? '✅' : '❌';
       
       $bot->editMessageText([
         'chat_id'=> $chat_id,
         'text'=> "please choose items 👇🏻",
         'reply_markup'=> Telebot::inline_keyboard("
-[Cat 🐈|toggle_cat] [$ch_cat|toggle_cat]
-[Dog 🐶|toggle_dog] [$ch_dog|toggle_dog]
-[Bird 🐣|toggle_bird] [$ch_bird|toggle_bird]
-[Boy 🧑🏻‍🦱|toggle_boy] [$ch_boy|toggle_boy]
-[Girl 👱🏻‍♀|toggle_girl] [$ch_girl|toggle_girl]
+[Animals 🐈|toggle_animals] [$ch_animals|toggle_animals]
+[Sweetie 💖|toggle_sweetie] [$ch_sweetie|toggle_sweetie]
 [Anime 🎗|toggle_anime] [$ch_anime|toggle_anime]
-[Others...|toggle_etc] [$ch_etc|toggle_etc]
+[Foods 🍩|toggle_foods] [$ch_foods|toggle_foods]
+[Kids 👼🏻|toggle_kids] [$ch_animals|toggle_kids]
+[Other...|toggle_etc] [$ch_etc|toggle_etc]
 [Cancel ✖️|cancel] [Confirm ✨|confirm]"
 ),
         'message_id'=> $msg_id
@@ -265,17 +305,18 @@ All media: $media[all]
         'reply_markup'=> json_encode($keyboard),
         'message_id'=> $msg_id
       ]);
+      $bot->answerCallbackQuery(['callback_query_id'=> $query_id, 'text'=> "Changed 💫", 'show_alert'=> false]);
     } elseif ($query_data == 'confirm') {
       unset($keyboard['inline_keyboard'][7]);
-      $il = array_keys($li);
       $lb = [];
-      foreach ($keyboard['inline_keyboard'] as $key => $val) $lb[$il[$key]] = $val[1]['text'] == '✅';
+      foreach ($keyboard['inline_keyboard'] as $key => $val) $lb[CONTENT_TYPES[$key]] = $val[1]['text'] == '✅';
       if (!in_array(true, $lb, true)) {
         return $bot->answerCallbackQuery([
           'callback_query_id'=> $query_id,
           'text'=> 'Choose at least a item!',
           'show_alert'=> true
         ]);
+        $bot->answerCallbackQuery(['callback_query_id'=> $query_id, 'text'=> "Applied 🫶🏻", 'show_alert'=> false]);
       } else {
         $lt = array_keys($lb, true);
         $db->change_user($chat_id, 'data', json_encode($lt));

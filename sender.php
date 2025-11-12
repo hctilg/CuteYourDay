@@ -30,13 +30,13 @@ try {
   exit;
 }
 
+$bot_username = "@" . $bot('getMe')['result']['username'];
+
 $users = $db->get_users();
 
-$pic_types = ['girl', 'boy', 'cat', 'dog', 'bird', 'anime', 'etc'];
-$pics = [];
-
-foreach($pic_types as $pic_type) {
-  $pics[$pic_type] = $db->random($pic_type);
+$medias = [];
+foreach(CONTENT_TYPES as $media_type) {
+  $medias[$media_type] = $db->random($media_type);
 }
 
 foreach($users as $user) {
@@ -49,9 +49,9 @@ foreach($users as $user) {
   if ((time() - $user['last_date']) > (int)(6.1 * 60 * 60)) {
     $types = json_decode($user['data']);
     $rand_type = $types[array_rand($types)];
-    $pic = $pics[$rand_type];
-    if (!!empty($pic) || $user['id'] == CHACNNEL_MEDIA) continue;
-    $bot->copyMessage(['chat_id'=> $user['id'], 'from_chat_id'=> CHACNNEL_MEDIA, 'message_id'=> $pic, 'caption'=> "@" . $bot('getMe')['result']['username'], 'protect_content'=> 'false']);
+    $media = $medias[$rand_type];
+    if (!!empty($media) || $user['id'] == CHACNNEL_MEDIA) continue;
+    $bot->copyMessage(['chat_id'=> $user['id'], 'from_chat_id'=> CHACNNEL_MEDIA, 'message_id'=> $media, 'caption'=> $bot_username, 'protect_content'=> 'false']);
     $db->change_user($user['id'], 'last_date', time());
   }
 }
