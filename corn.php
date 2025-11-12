@@ -36,8 +36,6 @@ try {
   exit;
 }
 
-$bot_username = "@" . $bot('getMe')['result']['username'];
-
 $users = $db->get_users();
 
 $medias = [];
@@ -45,19 +43,20 @@ foreach(CONTENT_TYPES as $media_type) {
   $medias[$media_type] = $db->random($media_type);
 }
 
+$bot_username = "@" . $bot("getMe")['result']['username'];
+
 foreach($users as $user) {
-  $chat_member = $bot->getChatMember(['chat_id'=> $user['id'], 'user_id'=> $user['id']]);
-  $status = $chat_member['ok'] ? $chat_member['result']['status'] : 'left';
-  $is_member = in_array($status, ['member', 'administrator', 'creator']);
-  if (!$chat_member['ok']) $db->remove_user($user['id']);
-  if (!$is_member) continue;
-  
   if ((time() - $user['last_date']) > (int)(6.1 * 60 * 60)) {
     $types = json_decode($user['data']);
     $rand_type = $types[array_rand($types)];
     $media = $medias[$rand_type];
     if (!!empty($media) || $user['id'] == CHACNNEL_MEDIA) continue;
-    $bot->copyMessage(['chat_id'=> $user['id'], 'from_chat_id'=> CHACNNEL_MEDIA, 'message_id'=> $media, 'caption'=> $bot_username, 'protect_content'=> 'false']);
-    $db->change_user($user['id'], 'last_date', time());
+
+    $msg = $bot->copyMessage(['chat_id'=> $user['id'], 'from_chat_id'=> CHACNNEL_MEDIA, 'message_id'=> $media, 'caption'=> "$bot_username #$rand_type", 'protect_content'=> 'false']);
+    
+    if (!$msg['ok'] && $msg['description'] == "Forbidden: bot was blocked by the user")
+      $db->remove_user($user['id']);
+    else
+      $db->change_user($user['id'], 'last_date', time());
   }
 }
