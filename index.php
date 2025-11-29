@@ -98,9 +98,20 @@ $bot->on('photo', function($data) use ($bot) {
   
   if ($chat_type != 'private' || $chat_id != CREATOR) return;
   
+  request:
   $mc = $bot->sendPhoto(['chat_id'=> CHACNNEL_MEDIA, 'photo'=> $photo]);
   $mc_id = $mc['result']['message_id'];
-  
+  if (!$mc['ok'] && $mc['error_code'] == 429) {
+    $retry_after = $mc['parameters']['retry_after'] + 1;
+    sleep($retry_after);
+    $bot->sendMessage([
+      'chat_id'=> $chat_id,
+      'text'=> "Sorry, it was sent with a $retry_after\s delay due to the bot being busy 🙃",
+      'reply_to_message_id'=> $mc_id
+    ]);
+    goto request;
+  }
+
   $bot->sendMessage([
     'chat_id'=> CHACNNEL_MEDIA,
     'text'=> "Choose Type or Reject:",
@@ -129,9 +140,20 @@ $bot->on('video', function($data) use ($bot) {
   
   if ($chat_type != 'private' || $chat_id != CREATOR) return;
   
+  request:
   $mc = $bot->sendVideo(['chat_id'=> CHACNNEL_MEDIA, 'video'=> $video]);
   $mc_id = $mc['result']['message_id'];
-  
+  if (!$mc['ok'] && $mc['error_code'] == 429) {
+    $retry_after = $mc['parameters']['retry_after'] + 1;
+    sleep($retry_after);
+    $bot->sendMessage([
+      'chat_id'=> $chat_id,
+      'text'=> "Sorry, it was sent with a $retry_after\s delay due to the bot being busy 🙃",
+      'reply_to_message_id'=> $mc_id
+    ]);
+    goto request;
+  }
+
   $bot->sendMessage([
     'chat_id'=> CHACNNEL_MEDIA,
     'text'=> "Choose Type or Reject:",
@@ -159,8 +181,19 @@ $bot->on('animation', function($data) use ($bot) {
   
   if ($chat_type != 'private' || $chat_id != CREATOR) return;
   
+  request:
   $mc = $bot->sendAnimation(['chat_id'=> CHACNNEL_MEDIA, 'animation'=> $gif]);
   $mc_id = $mc['result']['message_id'];
+  if (!$mc['ok'] && $mc['error_code'] == 429) {
+    $retry_after = $mc['parameters']['retry_after'] + 1;
+    sleep($retry_after);
+    $bot->sendMessage([
+      'chat_id'=> $chat_id,
+      'text'=> "Sorry, it was sent with a $retry_after\s delay due to the bot being busy 🙃",
+      'reply_to_message_id'=> $mc_id
+    ]);
+    goto request;
+  }
   
   $bot->sendMessage([
     'chat_id'=> CHACNNEL_MEDIA,
