@@ -3,7 +3,9 @@
 /*
  * Cron Job : 
  *            Minute   Hour   Day   Month   Weekday
- *               0      *      *      *        *
+ *               *‌/15      *      *      *        *
+ * Command :
+ *          `curl --max-time 3600 http://example.com/CuteYourDay/corn.php`
  */
 
 /********************** Importing Requirements **********************/
