@@ -98,10 +98,6 @@ $bot->on('photo', function($data) use ($bot) {
   
   if ($chat_type != 'private' || $chat_id != CREATOR) return;
   
-  $bot->setMessageReaction(['chat_id'=> CREATOR, 'reaction'=> json_encode([
-    ['type' => 'emoji', 'emoji'=> '👍']
-  ]), 'message_id'=> $msg_id]);
-  
   $mc = $bot->sendPhoto(['chat_id'=> CHACNNEL_MEDIA, 'photo'=> $photo]);
   $mc_id = $mc['result']['message_id'];
   
@@ -116,6 +112,13 @@ $bot->on('photo', function($data) use ($bot) {
 "),
     'reply_to_message_id'=> $mc_id
   ]);
+  
+  $bot->setMessageReaction(['chat_id'=> $chat_id, 'reaction'=> json_encode([
+    ['type' => 'emoji', 'emoji'=> '👍']
+  ]), 'message_id'=> $msg_id]);
+  
+  if (isset($data["media_group_id"])) sleep(1);
+  
 });
 
 $bot->on('video', function($data) use ($bot) {
@@ -125,10 +128,6 @@ $bot->on('video', function($data) use ($bot) {
   $msg_id = $data['message_id'] ?? -1;
   
   if ($chat_type != 'private' || $chat_id != CREATOR) return;
-  
-  $bot->setMessageReaction(['chat_id'=> CREATOR, 'reaction'=> json_encode([
-    ['type' => 'emoji', 'emoji'=> '👍']
-  ]), 'message_id'=> $msg_id]);
   
   $mc = $bot->sendVideo(['chat_id'=> CHACNNEL_MEDIA, 'video'=> $video]);
   $mc_id = $mc['result']['message_id'];
@@ -144,6 +143,12 @@ $bot->on('video', function($data) use ($bot) {
 "),
     'reply_to_message_id'=> $mc_id
   ]);
+  
+  $bot->setMessageReaction(['chat_id'=> $chat_id, 'reaction'=> json_encode([
+    ['type' => 'emoji', 'emoji'=> '👍']
+  ]), 'message_id'=> $msg_id]);
+  
+  if (isset($data["media_group_id"])) sleep(1);
 });
 
 $bot->on('animation', function($data) use ($bot) { 
@@ -153,10 +158,6 @@ $bot->on('animation', function($data) use ($bot) {
   $msg_id = $data['message_id'] ?? -1;
   
   if ($chat_type != 'private' || $chat_id != CREATOR) return;
-  
-  $bot->setMessageReaction(['chat_id'=> CREATOR, 'reaction'=> json_encode([
-    ['type' => 'emoji', 'emoji'=> '👍']
-  ]), 'message_id'=> $msg_id]);
   
   $mc = $bot->sendAnimation(['chat_id'=> CHACNNEL_MEDIA, 'animation'=> $gif]);
   $mc_id = $mc['result']['message_id'];
@@ -172,6 +173,12 @@ $bot->on('animation', function($data) use ($bot) {
 "),
     'reply_to_message_id'=> $mc_id
   ]);
+  
+  $bot->setMessageReaction(['chat_id'=> $chat_id, 'reaction'=> json_encode([
+    ['type' => 'emoji', 'emoji'=> '👍']
+  ]), 'message_id'=> $msg_id]);
+  
+  if (isset($data["media_group_id"])) sleep(1);
 });
 
 $bot->on('callback_query', function($callback_query) use ($bot, $db) {
@@ -307,7 +314,7 @@ All media: $media[all]
       ]);
       $bot->answerCallbackQuery(['callback_query_id'=> $query_id, 'text'=> "Changed 💫", 'show_alert'=> false]);
     } elseif ($query_data == 'confirm') {
-      unset($keyboard['inline_keyboard'][7]);
+      unset($keyboard['inline_keyboard'][count(CONTENT_TYPES)]);
       $lb = [];
       foreach ($keyboard['inline_keyboard'] as $key => $val) $lb[CONTENT_TYPES[$key]] = $val[1]['text'] == '✅';
       if (!in_array(true, $lb, true)) {
