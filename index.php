@@ -96,10 +96,11 @@ $bot->on('photo', function($data) use ($bot) {
   $photo = end($data['photo'])['file_id'] ?? 'false';
   $msg_id = $data['message_id'] ?? -1;
   
-  if ($chat_type != 'private' || $chat_id != CREATOR) return;
+  if ($chat_type != 'private') return;
+  $is_user = $chat_id != CREATOR;
   
   request:
-  $mc = $bot->sendPhoto(['chat_id'=> CHACNNEL_MEDIA, 'photo'=> $photo]);
+  $mc = $bot->sendPhoto(['chat_id'=> CHACNNEL_MEDIA, 'photo'=> $photo, 'caption'=> $is_user ? "via $chat_id" : false]);
   $mc_id = $mc['result']['message_id'];
   if (!$mc['ok'] && $mc['error_code'] == 429) {
     $retry_after = $mc['parameters']['retry_after'] + 1;
@@ -138,10 +139,11 @@ $bot->on('video', function($data) use ($bot) {
   $video = $data["video"]["file_id"] ?? 'false';
   $msg_id = $data['message_id'] ?? -1;
   
-  if ($chat_type != 'private' || $chat_id != CREATOR) return;
+  if ($chat_type != 'private') return;
+  $is_user = $chat_id != CREATOR;
   
   request:
-  $mc = $bot->sendVideo(['chat_id'=> CHACNNEL_MEDIA, 'video'=> $video]);
+  $mc = $bot->sendVideo(['chat_id'=> CHACNNEL_MEDIA, 'video'=> $video, 'caption'=> $is_user ? "via $chat_id" : false]);
   $mc_id = $mc['result']['message_id'];
   if (!$mc['ok'] && $mc['error_code'] == 429) {
     $retry_after = $mc['parameters']['retry_after'] + 1;
@@ -179,10 +181,11 @@ $bot->on('animation', function($data) use ($bot) {
   $gif = $data["animation"]["file_id"] ?? 'false';
   $msg_id = $data['message_id'] ?? -1;
   
-  if ($chat_type != 'private' || $chat_id != CREATOR) return;
+  if ($chat_type != 'private') return;
+  $is_user = $chat_id != CREATOR;
   
   request:
-  $mc = $bot->sendAnimation(['chat_id'=> CHACNNEL_MEDIA, 'animation'=> $gif]);
+  $mc = $bot->sendAnimation(['chat_id'=> CHACNNEL_MEDIA, 'animation'=> $gif, 'caption'=> $is_user ? "via $chat_id" : false]);
   $mc_id = $mc['result']['message_id'];
   if (!$mc['ok'] && $mc['error_code'] == 429) {
     $retry_after = $mc['parameters']['retry_after'] + 1;
