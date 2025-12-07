@@ -107,8 +107,8 @@ $bot->on('photo', function($data) use ($bot) {
     sleep($retry_after);
     $bot->sendMessage([
       'chat_id'=> $chat_id,
-      'text'=> "Sorry, it was sent with a $retry_after\s delay due to the bot being busy 🙃",
-      'reply_to_message_id'=> $mc_id
+      'text'=> "Sorry, it was sent with a ${retry_after}s delay due to the bot being busy 🙃",
+      'reply_to_message_id'=> $msg_id
     ]);
     goto request;
   }
@@ -150,8 +150,8 @@ $bot->on('video', function($data) use ($bot) {
     sleep($retry_after);
     $bot->sendMessage([
       'chat_id'=> $chat_id,
-      'text'=> "Sorry, it was sent with a $retry_after\s delay due to the bot being busy 🙃",
-      'reply_to_message_id'=> $mc_id
+      'text'=> "Sorry, it was sent with a ${retry_after}s delay due to the bot being busy 🙃",
+      'reply_to_message_id'=> $msg_id
     ]);
     goto request;
   }
@@ -192,8 +192,8 @@ $bot->on('animation', function($data) use ($bot) {
     sleep($retry_after);
     $bot->sendMessage([
       'chat_id'=> $chat_id,
-      'text'=> "Sorry, it was sent with a $retry_after\s delay due to the bot being busy 🙃",
-      'reply_to_message_id'=> $mc_id
+      'text'=> "Sorry, it was sent with a ${retry_after}s delay due to the bot being busy 🙃",
+      'reply_to_message_id'=> $msg_id
     ]);
     goto request;
   }
