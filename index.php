@@ -100,15 +100,15 @@ $bot->on('photo', function($data) use ($bot) {
   $is_user = $chat_id != CREATOR;
   
   request:
-  $mc = $bot->sendPhoto(['chat_id'=> CHACNNEL_MEDIA, 'photo'=> $photo, 'caption'=> $is_user ? "via $chat_id" : false]);
+  $mc = $bot->sendPhoto(['chat_id'=> CHACNNEL_MEDIA, 'photo'=> $photo, 'caption'=> $is_user ? "via [$chat_id](tg://openmessage?user_id=$chat_id)" : false, 'parse_mode'=> "Markdown"]);
   $mc_id = $mc['result']['message_id'];
   if (!$mc['ok'] && $mc['error_code'] == 429) {
     $retry_after = $mc['parameters']['retry_after'] + 1;
     sleep($retry_after);
     $bot->sendMessage([
       'chat_id'=> $chat_id,
-      'text'=> "Sorry, it was sent with a ${retry_after}s delay due to the bot being busy 🙃",
-      'reply_to_message_id'=> $msg_id
+      'text'=> "Sorry, it was sent with a $retry_after\s delay due to the bot being busy 🙃",
+      'reply_to_message_id'=> $mc_id
     ]);
     goto request;
   }
@@ -143,15 +143,15 @@ $bot->on('video', function($data) use ($bot) {
   $is_user = $chat_id != CREATOR;
   
   request:
-  $mc = $bot->sendVideo(['chat_id'=> CHACNNEL_MEDIA, 'video'=> $video, 'caption'=> $is_user ? "via $chat_id" : false]);
+  $mc = $bot->sendVideo(['chat_id'=> CHACNNEL_MEDIA, 'video'=> $video, 'caption'=> $is_user ? "via [$chat_id](tg://openmessage?user_id=$chat_id)" : false, 'parse_mode'=> "Markdown"]);
   $mc_id = $mc['result']['message_id'];
   if (!$mc['ok'] && $mc['error_code'] == 429) {
     $retry_after = $mc['parameters']['retry_after'] + 1;
     sleep($retry_after);
     $bot->sendMessage([
       'chat_id'=> $chat_id,
-      'text'=> "Sorry, it was sent with a ${retry_after}s delay due to the bot being busy 🙃",
-      'reply_to_message_id'=> $msg_id
+      'text'=> "Sorry, it was sent with a $retry_after\s delay due to the bot being busy 🙃",
+      'reply_to_message_id'=> $mc_id
     ]);
     goto request;
   }
@@ -185,15 +185,15 @@ $bot->on('animation', function($data) use ($bot) {
   $is_user = $chat_id != CREATOR;
   
   request:
-  $mc = $bot->sendAnimation(['chat_id'=> CHACNNEL_MEDIA, 'animation'=> $gif, 'caption'=> $is_user ? "via $chat_id" : false]);
+  $mc = $bot->sendAnimation(['chat_id'=> CHACNNEL_MEDIA, 'animation'=> $gif, 'caption'=> $is_user ? "via [$chat_id](tg://openmessage?user_id=$chat_id)" : false, 'parse_mode'=> "Markdown"]);
   $mc_id = $mc['result']['message_id'];
   if (!$mc['ok'] && $mc['error_code'] == 429) {
     $retry_after = $mc['parameters']['retry_after'] + 1;
     sleep($retry_after);
     $bot->sendMessage([
       'chat_id'=> $chat_id,
-      'text'=> "Sorry, it was sent with a ${retry_after}s delay due to the bot being busy 🙃",
-      'reply_to_message_id'=> $msg_id
+      'text'=> "Sorry, it was sent with a $retry_after\s delay due to the bot being busy 🙃",
+      'reply_to_message_id'=> $mc_id
     ]);
     goto request;
   }
