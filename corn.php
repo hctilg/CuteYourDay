@@ -54,8 +54,15 @@ foreach($users as $user) {
     $media = $medias[$rand_type];
     if (!!empty($media) || $user['id'] == CHACNNEL_MEDIA) continue;
 
-    $channel_preview_id = substr(CHACNNEL_MEDIA, 4);
-    $msg = $bot->copyMessage(['chat_id'=> $user['id'], 'from_chat_id'=> CHACNNEL_MEDIA, 'message_id'=> $media, 'caption'=> "$bot_username [~](https://t.me/c/$channel_preview_id/$media) #$rand_type", 'protect_content'=> 'false', 'parse_mode'=> "Markdown"]);
+    $msg = $bot->copyMessage([
+      'chat_id'=> $user['id'],
+      'from_chat_id'=> CHACNNEL_MEDIA,
+      'message_id'=> $media,
+      'caption'=> "#$rand_type$bot_username",
+      'reply_markup'=> Telebot::inline_keyboard("[Non-Cute Report|report_$media]"),
+      'protect_content'=> 'false',
+      'parse_mode'=> "Markdown"
+    ]);
     
     if (!$msg['ok'] && $msg['description'] == "Forbidden: bot was blocked by the user")
       $db->remove_user($user['id']);
