@@ -85,7 +85,15 @@ $bot->on('text', function($data) use ($bot, $db) {
     $types = ['animals', 'sweetie', 'etc'];
     $rand_type = $types[array_rand($types)];
     $pic = $db->random($rand_type);
-    if (!empty($pic)) $bot->copyMessage(['chat_id'=> $chat_id, 'from_chat_id'=> CHACNNEL_MEDIA, 'message_id'=> $pic, 'caption'=> "first photo for you :)", 'protect_content'=> 'false']);
+    if (!empty($pic))
+      $bot->copyMessage([
+        'chat_id'=> $chat_id,
+        'from_chat_id'=> CHACNNEL_MEDIA,
+        'message_id'=> $pic,
+        'caption'=> "first photo for you :)",
+        'reply_markup'=> Telebot::inline_keyboard("[Non-Cute Report|report_$pic]"),
+        'protect_content'=> 'false'
+      ]);
   }
   
 });
@@ -276,6 +284,15 @@ $bot->on('callback_query', function($callback_query) use ($bot, $db) {
     $db->remove_media($media_id);
     $bot->deleteMessage(['chat_id'=> CHACNNEL_MEDIA, 'message_id'=> $media_id]);
     $bot->answerCallbackQuery(['callback_query_id'=> $query_id, 'text'=> "Deleted 🗑", 'show_alert'=> true]);
+    return;
+  }
+  
+  if (startsWith('report_', $query_data)) {
+    $media_id = substr($query_data, strlen('report_'));
+    $channel_preview_id = substr(CHACNNEL_MEDIA, 4);
+    $bot->editMessageCaption(['chat_id'=> $chat_id, 'reply_markup'=> Telebot::inline_keyboard("[Reported.|reported]"), 'message_id'=> $msg_id]);
+    $bot->sendMessage(['chat_id'=> CREATOR, 'text'=> 'You have a report for non-cute media.', 'reply_markup'=> Telebot::inline_keyboard("[View in channel|url:https://t.me/c/$channel_preview_id/$media_id]")]);
+    $bot->answerCallbackQuery(['callback_query_id'=> $query_id, 'text'=> "Reported.", 'show_alert'=> false]);
     return;
   }
 
